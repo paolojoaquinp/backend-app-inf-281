@@ -18,22 +18,22 @@ CREATE TABLE Usuarios(
     createdAt TIMESTAMP(0) NOT NULL
 );
 
-DROP TABLE IF EXISTS Normas;
-CREATE TABLE Normas(
-    id BIGSERIAL PRIMARY KEY,
-    id_user BIGINT,
-    titulo varchar(64),
-    descripcion varchar(255),
-    createdAt TIMESTAMP(0) NOT NULL
-    FOREIGN KEY(id_user) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
-);
-
 DROP TABLE IF EXISTS Administradores;
 CREATE TABLE Administradores(
     id BIGSERIAL PRIMARY KEY,
     idUser integer not null,
     FOREIGN KEY (idUser) REFERENCES Usuarios(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
+DROP TABLE IF EXISTS Normas;
+CREATE TABLE Normas(
+    id BIGSERIAL PRIMARY KEY,
+    id_admin BIGINT,
+    titulo varchar(64),
+    descripcion varchar(255),
+    createdAt TIMESTAMP(0) NOT NULL,
+    FOREIGN KEY(id_admin) REFERENCES administradores(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
 
 DROP TABLE IF EXISTS Educacion;
 CREATE TABLE Educacion(
@@ -50,7 +50,7 @@ DROP TABLE IF EXISTS Eventos;
 CREATE TABLE Eventos(
     id BIGSERIAL PRIMARY KEY,
     id_admin BIGINT,
-    titulo varchar(64),
+    titulo varchar(64), 
     descripcion varchar(255),
     imagen varchar(255),
     fecha TIMESTAMP(0) NOT NULL,
