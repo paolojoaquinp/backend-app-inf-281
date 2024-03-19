@@ -47,7 +47,4 @@ app.use(function(err, req, res, next) {
     res.status(500).send('Algo salio mal!, '+err.message);
 });
 
-module.exports = {
-    app: app,
-    server: server
-};
+module.exports = app;
