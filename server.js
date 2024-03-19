@@ -13,7 +13,7 @@ const usuario = require('./routes/usuariosRoutes');
 const admin = require('./routes/administradoresRoutes');
 const evento = require('./routes/eventoRoutes');
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -37,7 +37,7 @@ admin(app);
 evento(app);
 
 // '192.168.1.6' mi ip actual
-server.listen(3000, '192.168.1.6' || 'localhost', function() {
+server.listen(3001, 'localhost', function() {
     console.log('Aplicacion de NodeJS '+port+' iniciada.....');
 });
 
