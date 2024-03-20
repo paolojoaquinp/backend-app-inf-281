@@ -2,6 +2,18 @@ const db = require('../config/config');
 
 const Norma = {}
 
+
+Norma.getAll = () => {
+    const sql = `
+    SELECT
+        *
+    FROM
+        normas
+    ORDER BY id ASC 
+    `;
+    return db.manyOrNone(sql);
+}
+
 Norma.getAllById = (userId) => {
     const sql = `
     SELECT
@@ -36,15 +48,15 @@ Norma.findByUserId = (id) => {
 Norma.create = (norma) => {
     const sql = `
         INSERT INTO normas (
-            id_user,
+            id_admin,
             titulo,
             descripcion,
             createdAt
         )
         VALUES($1, $2, $3, $4) RETURNING id
     `;
-    return db.none(sql,[
-        norma.idUser,
+    return db.oneOrNone(sql,[
+        norma.idAdministrador,
         norma.titulo,
         norma.descripcion,
         new Date()
@@ -56,7 +68,7 @@ Norma.update = (norma) => {
         UPDATE
             normas
         SET
-            id_user = $2,
+            id_admin = $2,
             titulo = $3,
             descripcion = $4
         WHERE
@@ -64,21 +76,20 @@ Norma.update = (norma) => {
     `;
     return db.none(sql,[
         norma.id,
-        norma.idUser,
+        norma.idAdministrador,
         norma.titulo,
         norma.descripcion,
         new Date()
     ]);
 
 }
-Norma.remove = (id, idUser) => {
+Norma.remove = (id) => {
     const sql = `
         DELETE FROM normas
-        WHERE id = $1 AND id_user = $2;
+        WHERE id = $1;
     `;
     return db.none(sql,[
-        id,
-        idUser
+        id
     ]);
 }
 

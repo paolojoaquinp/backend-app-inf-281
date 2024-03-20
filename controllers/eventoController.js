@@ -72,7 +72,6 @@ module.exports = {
     async remove(req, res, next) {
         try {
             const id = req.params.id;
-            console.log(id);
             /* const idAdministrador = req.params.idAdministrador; */
             await Evento.remove(id);
             return res.status(201).json({

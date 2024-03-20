@@ -6,7 +6,7 @@ module.exports = (app) => {
     app.post('/api/norma/create', NormasController.register);
     app.get('/api/norma/findById/:id', NormasController.findById);
     app.put('/api/norma/update', NormasController.update);
-    app.delete('/api/norma/remove', NormasController.remove)
+    app.delete('/api/norma/remove/:id', NormasController.remove)
 
     /* app.get('/api/users/findById/:id', passport.authenticate('jwt', {session:false}), UsersController.findById); */
 

@@ -7,7 +7,7 @@ Educacion.getAllById = (userId) => {
     SELECT
         *
     FROM
-        eventos
+        educacion
     WHERE
         id_admin = $1
     `;
@@ -15,6 +15,17 @@ Educacion.getAllById = (userId) => {
     return db.manyOrNone(sql,userId);
 }
 
+Educacion.getAll = () => {
+    const sql = `
+    SELECT
+        *
+    FROM
+        educacion
+    ORDER BY id ASC 
+    `;
+
+    return db.manyOrNone(sql);
+}
 
 Educacion.findByUserId = (id) => {
     const sql = `
@@ -44,10 +55,10 @@ Educacion.create = (educacion) => {
             imagen,
             createdAt
         )
-        VALUES($1, $2, $3, $4, $5, $6) RETURNING id
+        VALUES($1, $2, $3, $4, $5) RETURNING id
     `;
-    return db.none(sql,[
-        educacion.idAdmin,
+    return db.oneOrNone(sql,[
+        educacion.idAdministrador,
         educacion.titulo,
         educacion.descripcion,
         educacion.imagen,
@@ -63,29 +74,26 @@ Educacion.update = (educacion) => {
             id_admin = $2,
             titulo = $3,
             descripcion = $4,
-            imagen = $5,
-            createdAt = $7
+            imagen = $5
         WHERE
             id = $1
     `;
     return db.none(sql,[
         educacion.id,
-        educacion.idAdmin,
+        educacion.idAdministrador,
         educacion.titulo,
         educacion.descripcion,
-        educacion.imagen,
-        new Date()
+        educacion.imagen
     ]);
 
 }
-Educacion.remove = (id, idAdmin) => {
+Educacion.remove = (id) => {
     const sql = `
         DELETE FROM educacion
-        WHERE id = $1 AND id_admin = $2;
+        WHERE id = $1;
     `;
     return db.none(sql,[
-        id,
-        idAdmin
+        id
     ]);
 }
 

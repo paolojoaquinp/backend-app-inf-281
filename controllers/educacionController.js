@@ -1,6 +1,3 @@
-// fill this file based on the normaController.js file
-// and the model in models/educacion.js
-//
 const Educacion = require('../models/educacion');
 
 module.exports = {    
@@ -55,7 +52,7 @@ module.exports = {
         try {
             
             const educacion = req.body;
-            console.log(`Datos enviados del usuario: ${JSON.stringify(user)}`);
+            console.log(`Datos enviados del usuario: ${JSON.stringify(educacion.idAdministrador)}`);
             await Educacion.update(educacion);
             return res.status(201).json({
                 success: true,
@@ -69,10 +66,10 @@ module.exports = {
             });
         }
     },
-    async delete(req, res, next) {
+    async remove(req, res, next) {
         try {
             const id = req.params.id;
-            await Educacion.delete(id);
+            await Educacion.remove(id);
             return res.status(201).json({
                 success: true,
                 message: 'El registro se elimino correctamente'

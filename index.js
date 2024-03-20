@@ -12,6 +12,7 @@ const norma = require('./routes/normasRoutes');
 const usuario = require('./routes/usuariosRoutes');
 const admin = require('./routes/administradoresRoutes');
 const evento = require('./routes/eventoRoutes');
+const educacion = require('./routes/educacionRoutes');
 
 const port = process.env.PORT || 3001;
 
@@ -35,9 +36,11 @@ norma(app);
 usuario(app);
 admin(app);
 evento(app);
+educacion(app);
+
 
 // '192.168.1.6' mi ip actual
-server.listen(3001, 'localhost', function() {
+server.listen(3001, '127.0.0.1' || 'localhost', function() {
     console.log('Aplicacion de NodeJS '+port+' iniciada.....');
 });
 

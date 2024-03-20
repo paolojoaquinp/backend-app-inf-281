@@ -59,7 +59,7 @@ Evento.create = (evento) => {
         )
         VALUES($1, $2, $3, $4, $5, $6)
     `;
-    return db.none(sql,[
+    return db.oneOrNone(sql,[
         evento.idAdministrador,
         evento.titulo,
         evento.descripcion,

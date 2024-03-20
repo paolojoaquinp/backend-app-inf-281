@@ -37,7 +37,7 @@ CREATE TABLE Normas(
 
 DROP TABLE IF EXISTS Educacion;
 CREATE TABLE Educacion(
-    id BIGSERIAL PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY AUTO INCREMENT,
     id_admin BIGINT,
     titulo varchar(64),
     descripcion varchar(255),
@@ -48,7 +48,7 @@ CREATE TABLE Educacion(
 
 DROP TABLE IF EXISTS Eventos;
 CREATE TABLE Eventos(
-    id BIGSERIAL PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY AUTO INCREMENT,
     id_admin BIGINT,
     titulo varchar(64), 
     descripcion varchar(255),

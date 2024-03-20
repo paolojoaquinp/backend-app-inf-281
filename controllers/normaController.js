@@ -2,8 +2,7 @@ const Norma = require('../models/norma');
 module.exports = {
     async getAll(req, res, next) {
         try {
-            const id = req.params.id;
-            const data = await Norma.getAllById(id);
+            const data = await Norma.getAll();
             return res.status(200).json(data);
         } catch (error) {
             console.log(`Error: ${error}`);
@@ -52,7 +51,7 @@ module.exports = {
         try {
             
             const norma = req.body;
-            console.log(`Datos enviados del usuario: ${JSON.stringify(user)}`);
+            console.log(`Datos enviados del usuario: ${JSON.stringify(norma.idAdministrador)}`);
             await Norma.update(norma);
 
             return res.status(201).json({
@@ -72,9 +71,8 @@ module.exports = {
     },
     async remove(req, res, next) {
         try {
-            const id = req.body.id;
-            const idUser = req.body.idUser;
-            await Norma.remove(id,idUser);
+            const id = req.params.id;
+            await Norma.remove(id);
 
             return res.status(201).json({
                 success: true,
