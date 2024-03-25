@@ -18,12 +18,35 @@ CREATE TABLE Usuarios(
     createdAt TIMESTAMP(0) NOT NULL
 );
 
+ INSERT INTO usuarios(
+            nombre,
+            paterno,
+            materno,
+            direccion,
+            telefono,
+            estado,
+            email,
+            password,
+            createdAt
+        ) VALUES (
+            'nametest',
+            'paternotest',
+            'maternotest',
+            'direccion calle #000',
+            '1234567',
+            false,
+            'test@prueba.com',
+            '123456',
+            '20240325 10:34:09 AM'
+        );
+
 DROP TABLE IF EXISTS Administradores;
 CREATE TABLE Administradores(
     id BIGSERIAL PRIMARY KEY,
     idUser integer not null,
     FOREIGN KEY (idUser) REFERENCES Usuarios(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
+INSERT INTO administradores (idUser) VALUES (1);
 DROP TABLE IF EXISTS Normas;
 CREATE TABLE Normas(
     id BIGSERIAL PRIMARY KEY,
@@ -37,7 +60,7 @@ CREATE TABLE Normas(
 
 DROP TABLE IF EXISTS Educacion;
 CREATE TABLE Educacion(
-    id BIGSERIAL PRIMARY KEY AUTO INCREMENT,
+    id BIGSERIAL PRIMARY KEY,
     id_admin BIGINT,
     titulo varchar(64),
     descripcion varchar(255),
@@ -48,7 +71,7 @@ CREATE TABLE Educacion(
 
 DROP TABLE IF EXISTS Eventos;
 CREATE TABLE Eventos(
-    id BIGSERIAL PRIMARY KEY AUTO INCREMENT,
+    id BIGSERIAL PRIMARY KEY,
     id_admin BIGINT,
     titulo varchar(64), 
     descripcion varchar(255),
