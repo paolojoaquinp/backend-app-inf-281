@@ -37,53 +37,39 @@ module.exports = {
             });
         }
     },
+    // login de usuario con campo session_token y usando jwt
     async login(req, res, next) {
         try {
-            const email = req.body.email;
-            const password = req.body.password;
-
-            const myUser = await User.findByEmail(email);
-
-            if(!myUser) {
-                return res.status(401).json({
-                    success: false,
-                    message: 'El email no fue encontrado'
-                });
-            }
-
-            if(User.isPasswordMatched(password, myUser.password)) {
-                const token = jwt.sign({id: myUser.id, email: myUser.email}, keys.secretOrKey, {
-                    /* expiresIn: (60*60*24) // 1hora */
-                });
-                const data = {
-                    id: myUser.id,
-                    name: myUser.name,
-                    lastname: myUser.lastname,
-                    email: myUser.email,
-                    session_token: `JWT ${token}`
+            const user = req.body;
+            console.log(`Datos enviados del usuario: ${JSON.stringify(user)}`);
+            const data = await User.findByEmail(user.email);
+            console.log(`Usuario: ${data.email}`);
+            if(data) {
+                if(User.isPasswordMatched(user.password, data.password)) {
+                    const token = jwt.sign({
+                        id: data.id,
+                        email: data.email
+                    }, keys.secretOrKey, {
+                        expiresIn: 60 * 60
+                    });
+                    await User.updateToken(data.id, token);
+                    return res.status(201).json({
+                        id: data.id,
+                        success: true,
+                        message: 'El usuario se ha logueado correctamente',
+                        token: token
+                    });
                 }
-
-                // Actualizar token
-                await User.updateToken(myUser.id,`JWT ${token}`);
-
-                return res.status(201).json({
-                    success: true,
-                    data: data,
-                    mesage: 'El usuario ha sido autenticado'
-                });
-            } else {
-                return res.status(401).json({
-                    success: false,
-                    message: 'La contraseña es incorrecta',
-                    data: data
-                });
-
             }
+            return res.status(401).json({
+                success: false,
+                message: 'El usuario o la contraseña son incorrectos'
+            });
         } catch (error) {
             console.log(`Error: ${error}`);
             return res.status(501).json({
                 success: false,
-                message: 'Error al momento de hacer login',
+                message: 'Error al momento de loguear al usuario',
                 error: error
             });
         }

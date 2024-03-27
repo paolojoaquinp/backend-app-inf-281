@@ -60,19 +60,25 @@ Usuario.findByEmail = (email) => {
     const sql = `
     SELECT
         id,
-        name,
-        lastname,
+        nombre,
+        paterno,
+        materno,
+        direccion,
+        telefono,
+        estado,
         email,
         password,
+        createdAt,
         session_token
     FROM
-        users
+        usuarios
     WHERE
         email = $1
     `;
     return db.oneOrNone(sql, email);
 }
 
+//session_token new column add please
 Usuario.create = (usuario) => {
     const myPasswordHashed = crypto.createHash('md5').update(usuario.password).digest('hex');
     usuario.password = myPasswordHashed
@@ -87,9 +93,10 @@ Usuario.create = (usuario) => {
             estado,
             email,
             password,
-            createdAt
+            createdAt,
+            session_token
         )
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id
     `;
 
     return db.oneOrNone(sql, [
@@ -102,13 +109,14 @@ Usuario.create = (usuario) => {
         usuario.email,
         usuario.password,
         new Date(),
+        usuario.session_token
     ]);
 }
 
 Usuario.updateToken = (id,token) => {
     const sql = `
         UPDATE
-            users
+            usuarios
         SET
             session_token = $2
         WHERE
@@ -131,7 +139,7 @@ Usuario.findById = (id, callback) => {
             password,
             session_token
         FROM
-            users
+            usuarios
         WHERE
             id = $1
     `;
