@@ -81,29 +81,33 @@ CREATE TABLE Eventos(
     FOREIGN KEY(id_admin) REFERENCES administradores(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
--------------------------------
+------------------------------- task 02 abril
 
+DROP TABLE IF EXISTS Voluntarios;
+CREATE TABLE Voluntarios(
+    id BIGSERIAL PRIMARY KEY,
+    idUser integer not null,
+    FOREIGN KEY (idUser) REFERENCES Usuarios(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
 
-DROP TABLE IF EXISTS tasks Donante;
-CREATE TABLE Donante(
-    id integer primary key not null auto increment,
+DROP TABLE IF EXISTS Donantes;
+CREATE TABLE Donantes(
+    id BIGSERIAL PRIMARY KEY,
     idUser integer not null,
     ubicacion varchar(64),
     tipo varchar(20),
-    createdAt DATETIME,
-    FOREIGN KEY (idUser) REFERENCES Usuarios(id)
+    createdAt TIMESTAMP(0) NOT NULL,
+    FOREIGN KEY (idUser) REFERENCES Usuarios(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE Voluntario(
-    id integer primary key not null auto increment,
+DROP TABLE IF EXISTS Beneficiarios;
+CREATE TABLE Benefiarios(
+    id BIGSERIAL PRIMARY KEY,
     idUser integer not null,
-    FOREIGN KEY (idUser) REFERENCES Usuarios(id)
+    FOREIGN KEY (idUser) REFERENCES Usuarios(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
-CREATE TABLE Benefiario(
-    id integer primary key not null auto increment,
-    idUser integer not null,
-    FOREIGN KEY (idUser) REFERENCES Usuarios(id)
-);
+
+----------------------------------
 
 
 CREATE TABLE Donacion(

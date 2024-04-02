@@ -13,6 +13,9 @@ const usuario = require('./routes/usuariosRoutes');
 const admin = require('./routes/administradoresRoutes');
 const evento = require('./routes/eventoRoutes');
 const educacion = require('./routes/educacionRoutes');
+/* ------- */
+const voluntario = require('./routes/voluntariosRoutes');
+
 
 const port = process.env.PORT || 3001;
 
@@ -37,6 +40,7 @@ usuario(app);
 admin(app);
 evento(app);
 educacion(app);
+voluntario(app);
 
 
 // '192.168.1.6' mi ip actual
