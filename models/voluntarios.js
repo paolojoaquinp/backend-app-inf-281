@@ -45,7 +45,7 @@ Voluntario.findByUserId = (id) => {
 Voluntario.create = (norma) => {
     const sql = `
         INSERT INTO voluntarios (
-            idUser,
+            idUser
         )
         VALUES($1) RETURNING id
     `;

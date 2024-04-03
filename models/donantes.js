@@ -27,10 +27,10 @@ Donante.getAll = () => {
     return db.manyOrNone(sql);
 }
 
-Donante.findByUserId = (id) => {
+Donante.getByUserId = (idUser) => {
     const sql = `
     SELECT
-        id
+        id,
         idUser,
         ubicacion,
         tipo,
@@ -38,11 +38,12 @@ Donante.findByUserId = (id) => {
     FROM 
         donantes 
     WHERE
-        id = $1
+        idUser = $1
     GROUP BY
         id
-    `
-    return db.oneOrNone(sql, id);
+    `;
+
+    return db.manyOrNone(sql, idUser);
 }
 
 Donante.create = (donantes) => {

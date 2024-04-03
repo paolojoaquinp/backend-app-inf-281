@@ -1,4 +1,4 @@
-const Donante = require('../models/donates');
+const Donante = require('../models/donantes');
 
 module.exports = {    
     async getAll(req, res, next) {
@@ -21,7 +21,7 @@ module.exports = {
             return res.status(201).json({
                 success:true,
                 message: 'El registro se realizo correctamente',
-                data: data.id
+                data: data
             });
         } catch (error) {
             console.log(`Error: ${error}`);
@@ -35,8 +35,7 @@ module.exports = {
     async findById(req, res, next) {
         try {
             const id = req.params.id;
-
-            const data = await Donante.findByTaskId(id);    
+            const data = await Donante.getByUserId(id);    
             console.log(`Donante: ${data}`);
             return res.status(201).json(data);
         } 
