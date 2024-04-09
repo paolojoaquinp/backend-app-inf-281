@@ -101,7 +101,7 @@ CREATE TABLE Donantes(
 );
 
 DROP TABLE IF EXISTS Beneficiarios;
-CREATE TABLE Benefiarios(
+CREATE TABLE Beneficiarios(
     id BIGSERIAL PRIMARY KEY,
     idUser integer not null,
     FOREIGN KEY (idUser) REFERENCES Usuarios(id) ON UPDATE CASCADE ON DELETE CASCADE

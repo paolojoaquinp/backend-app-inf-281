@@ -20,8 +20,9 @@ Donante.getAll = () => {
     SELECT
         *
     FROM
-        donantes
-    ORDER BY id ASC 
+        donantes as d
+    INNER JOIN usuarios ON d.idUser = usuarios.id
+    ORDER BY d.id ASC
     `;
 
     return db.manyOrNone(sql);

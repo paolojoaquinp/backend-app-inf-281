@@ -45,7 +45,7 @@ Benficiario.findByUserId = (id) => {
 Benficiario.create = (norma) => {
     const sql = `
         INSERT INTO beneficiarios (
-            idUser,
+            idUser
         )
         VALUES($1) RETURNING id
     `;
