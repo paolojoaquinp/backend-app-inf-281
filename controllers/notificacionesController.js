@@ -1,11 +1,12 @@
 const Notificacion = require('../models/notificaciones');
 module.exports = {
-    async getAll(_, res) {
+    async getAll(req, res, next) {
         try {
             const data = await Notificacion.getAll();
-            return data;
+            return res.status(200).json(data);
         } catch (error) {
             console.log(`Error: ${error}`);
+
         }
     },
     async register(req, res ,next) {
@@ -31,7 +32,7 @@ module.exports = {
         try {
             const id = req.params.id;
 
-            const data = await Notificacion.findByTaskId(id);    
+            const data = await Notificacion.getAllById(id);    
             console.log(`Notificacion: ${data}`);
             return res.status(201).json(data);
         } 
