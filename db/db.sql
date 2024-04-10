@@ -109,6 +109,30 @@ CREATE TABLE Beneficiarios(
 
 ----------------------------------
 
+CREATE TABLE Notificaciones (
+    id BIGSERIAL PRIMARY KEY,
+    sender_id INTEGER NOT NULL,
+    receiver_id INTEGER NOT NULL,
+    message TEXT,
+    createdAt TIMESTAMP(0) NOT NULL,
+    readAt TIMESTAMP(0),
+    FOREIGN KEY (sender_id) REFERENCES Usuarios(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (receiver_id) REFERENCES Usuarios(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+INSERT INTO notificaciones(
+            sender_id,
+            receiver_id,
+            message,
+            createdat,
+            readat
+        ) VALUES (
+            1,
+            5,
+            'notificaciontest',
+            '20240325 10:34:09 AM',
+			'20000101 00:00:00 AM'
+        );
 
 CREATE TABLE Donacion(
     id integer primary key not null auto increment,
