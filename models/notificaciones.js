@@ -21,7 +21,7 @@ Notificacion.getAllById = (userId) => {
     FROM
         notificaciones
     WHERE
-        sender_id = $1
+        receiver_id = $1
     `;
 
     return db.manyOrNone(sql,userId);

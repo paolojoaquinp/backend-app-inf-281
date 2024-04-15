@@ -31,7 +31,7 @@ module.exports = {
         try {
             const id = req.params.id;
 
-            const data = await Notificacion.findByTaskId(id);    
+            const data = await Notificacion.getAllById(id);    
             console.log(`Notificacion: ${data}`);
             return res.status(201).json(data);
         } 

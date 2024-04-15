@@ -24,7 +24,7 @@ const educacion = require('./routes/educacionRoutes');
 const voluntario = require('./routes/voluntariosRoutes');
 const donante = require('./routes/donantesRoutes');
 const beneficiario = require('./routes/beneficiariosRoutes');
-
+const notificacion = require('./routes/notificacionesRoutes');
 
 const port = process.env.PORT || 3001;
 
@@ -52,6 +52,7 @@ educacion(app);
 voluntario(app);
 donante(app);
 beneficiario(app);
+notificacion(app);
 
 
 const io = new Server(server, {
