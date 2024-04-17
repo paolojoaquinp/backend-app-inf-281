@@ -14,7 +14,7 @@ Voluntario.getAll = () => {
     return db.manyOrNone(sql);
 }
 
-Voluntario.getAllById = (userId) => {
+Voluntario.getById = (userId) => {
     const sql = `
     SELECT
         *
@@ -24,7 +24,7 @@ Voluntario.getAllById = (userId) => {
         idUser = $1
     `;
 
-    return db.manyOrNone(sql,userId);
+    return db.oneOrNone(sql,userId);
 }
 
 

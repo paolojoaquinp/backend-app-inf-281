@@ -35,11 +35,27 @@ module.exports = {
             });
         }
     },
+    async getAllById(req, res, next) {
+        try {
+            const id = req.params.id;
+
+            const data = await Beneficiario.getAllById(id);    
+            console.log(`Beneficiario: ${data}`);
+            return res.status(201).json(data);
+        } 
+        catch (error) {
+            console.log(`Error: ${error}`);
+            return res.status(501).json({
+                success: false,
+                message: 'Error al obtener el usuario por ID'
+            });
+        }
+    },
     async findById(req, res, next) {
         try {
             const id = req.params.id;
 
-            const data = await Beneficiario.findByTaskId(id);    
+            const data = await Beneficiario.getById(id);    
             console.log(`Beneficiario: ${data}`);
             return res.status(201).json(data);
         } 

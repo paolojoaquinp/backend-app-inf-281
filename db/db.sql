@@ -135,6 +135,21 @@ INSERT INTO notificaciones(
 			false
         );
 
+INSERT INTO NOTIFICACIONES (
+	sender_id,
+	receiver_id,
+	message,
+	createdat,
+	isread
+) VALUES 
+(
+	4,
+	25,
+	'necesito',
+	'20240325 10:34:09 AM',
+	false
+);
+
 CREATE TABLE Donacion(
     id integer primary key not null auto increment,
     idDonante integer not null,

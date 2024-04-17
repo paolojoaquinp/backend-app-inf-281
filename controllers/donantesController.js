@@ -35,7 +35,7 @@ module.exports = {
     async findById(req, res, next) {
         try {
             const id = req.params.id;
-            const data = await Donante.getByUserId(id);    
+            const data = await Donante.getById(id);    
             console.log(`Donante: ${data}`);
             return res.status(201).json(data);
         } 

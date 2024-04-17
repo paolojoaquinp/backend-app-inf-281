@@ -14,6 +14,18 @@ Benficiario.getAll = () => {
     return db.manyOrNone(sql);
 }
 
+Benficiario.getById = (userId) => {
+    const sql = `
+    SELECT
+        *
+    FROM
+        beneficiarios
+    WHERE
+        idUser = $1
+    `;
+
+    return db.oneOrNone(sql,userId);
+}
 Benficiario.getAllById = (userId) => {
     const sql = `
     SELECT

@@ -28,6 +28,30 @@ Donante.getAll = () => {
     return db.manyOrNone(sql);
 }
 
+Donante.getById = (idUser) => {
+    const sql = `
+    SELECT
+        id,
+        idUser,
+        ubicacion,
+        tipo,
+        createdAt
+    FROM 
+        donantes 
+    WHERE
+        idUser = $1
+    `;
+
+    return db.oneOrNone(sql, idUser)
+        .then(result => {
+            if (result) {
+                return result.id;
+            } else {
+                return null;
+            }
+        });
+}
+
 Donante.getByUserId = (idUser) => {
     const sql = `
     SELECT

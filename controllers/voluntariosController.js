@@ -39,7 +39,7 @@ module.exports = {
         try {
             const id = req.params.id;
 
-            const data = await Voluntario.findByTaskId(id);    
+            const data = await Voluntario.getById(id);    
             console.log(`Voluntario: ${data}`);
             return res.status(201).json(data);
         } 
