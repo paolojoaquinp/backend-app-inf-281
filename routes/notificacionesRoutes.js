@@ -1,12 +1,12 @@
-const NotificacionesController = require('../controllers/notificacionesController');
+const NotificationesController = require('../controllers/notificacionesController');
 /* const passport = require('passport'); */
 
 module.exports = (app) => {
-    app.get('/api/notificacion/getAll', NotificacionesController.getAll);
-    app.post('/api/notificacion/create', NotificacionesController.register);
-    app.get('/api/notificacion/findById/:id', NotificacionesController.findById);
-    app.put('/api/notificacion/update', NotificacionesController.update);
-    app.delete('/api/notificacion/remove/:id', NotificacionesController.remove)
+    app.get('/api/notificacion/getAll', NotificationesController.getAll);
+    app.post('/api/notificacion/create', NotificationesController.register);
+    app.get('/api/notificacion/findById/:id', NotificationesController.findById);
+    app.put('/api/notificacion/update', NotificationesController.update);
+    app.delete('/api/notificacion/remove/:id', NotificationesController.remove);
 
     /* app.get('/api/users/findById/:id', passport.authenticate('jwt', {session:false}), UsersController.findById); */
 
