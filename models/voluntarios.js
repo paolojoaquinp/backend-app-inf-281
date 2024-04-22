@@ -8,8 +8,9 @@ Voluntario.getAll = () => {
     SELECT
         *
     FROM
-        voluntarios
-    ORDER BY id ASC 
+        voluntarios as v
+    INNER JOIN usuarios ON v.idUser = usuarios.id
+    ORDER BY v.id ASC
     `;
     return db.manyOrNone(sql);
 }

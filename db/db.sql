@@ -180,6 +180,12 @@ CREATE TABLE Organizacion(
     createdAt datetime
 );
 
+/* 
+
+    Inventario | puede incrementar si tiene el estado de "activado"
+               | disminuye(vuelve a su anterior estado) si esta en "desactivado"
+*/
+
 CREATE TABLE Inventario(
     id integer primary key not null auto increment,
     idDonacion integer not null,
