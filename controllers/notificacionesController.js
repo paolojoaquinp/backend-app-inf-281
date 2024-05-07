@@ -44,6 +44,22 @@ module.exports = {
             });
         }
     },
+    async findByType(req, res, next) {
+        try {
+            const type = req.params.type;
+
+            const data = await Notificacion.getByType(type);
+            console.log(`Notificacion: ${data}`);
+            return res.status(201).json(data);
+        } 
+        catch (error) {
+            console.log(`Error: ${error}`);
+            return res.status(501).json({
+                success: false,
+                message: 'Error al obtener el usuario por ID'
+            });
+        }
+    },
     async update(req, res, next) {
         try {
             
@@ -86,4 +102,23 @@ module.exports = {
             });
         }
     },
+    async readNotification(req, res, next) {
+        try {
+            const idNotification = req.params.idNotification;
+            console.log(`Datos enviados de la notificacion: ${idNotification}`);
+            await Notificacion.read(idNotification);
+
+            return res.status(201).json({
+                success: true,
+                message: 'Los datos de la tarea se actualizaron correctamente'
+            });
+        } catch (error) {
+            console.log(`Error: ${error}`);
+            return res.status(501).json({
+                success: false,
+                message: 'Hubo un error con la actualizacion de datos',
+                error: error
+            });
+        }
+    }
 };

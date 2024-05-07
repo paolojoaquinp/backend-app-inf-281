@@ -35,7 +35,7 @@ CREATE TABLE Usuarios(
             'direccion calle #000',
             '1234567',
             false,
-            'test@prueba.com',
+            'prueba@prueba.com',
             '123456',
             '20240325 10:34:09 AM'
         );
@@ -120,6 +120,8 @@ CREATE TABLE Notificaciones (
     FOREIGN KEY (sender_id) REFERENCES Usuarios(id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (receiver_id) REFERENCES Usuarios(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
+ALTER TABLE notificaciones
+ADD COLUMN tipo TYPE varchar(50);
 
 INSERT INTO notificaciones(
             sender_id,
@@ -150,17 +152,69 @@ INSERT INTO NOTIFICACIONES (
 	false
 );
 
+/* --------------------------- */
+
+DROP TABLE IF EXISTS Donacion;
 CREATE TABLE Donacion(
-    id integer primary key not null auto increment,
+    id BIGSERIAL PRIMARY KEY,
     idDonante integer not null,
+    estado varchar(10),
+    lat integer,
+    lng integer,
+    fechaRecoger TIMESTAMP(0) NOT NULL,
+    fechaEntregar TIMESTAMP(0) NOT NULL,
+    createdAt TIMESTAMP(0) NOT NULL,
+    FOREIGN KEY (idDonante) REFERENCES Donantes(idUser) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+ALTER TABLE Donantes
+ADD CONSTRAINT unique_idUser UNIQUE (idUser);
+
+ALTER TABLE Donacion
+ADD CONSTRAINT donacion_iddonante_fkey FOREIGN KEY (idDonante) REFERENCES Donantes(idUser);
+/* 
+ALTER TABLE Donacion
+DROP CONSTRAINT donacion_iddonante_fkey;
+
+ALTER TABLE Donacion
+ADD CONSTRAINT donacion_iddonante_fkey FOREIGN KEY (idDonante) REFERENCES Donantes(idUser) ON UPDATE CASCADE ON DELETE CASCADE;
+ */
+
+CREATE TABLE VoluntariosDonacion (
+    id BIGSERIAL PRIMARY KEY,
+    idDonacion integer not null,
     idVoluntario integer not null,
     estado varchar(10),
-    fechaRecoger datetime,
-    fechaEntregar datetime,
-    createdAt datetime,
-    FOREIGN KEY (idDonante) REFERENCES Donante(id),
-    FOREIGN KEY (idVoluntario) REFERENCES Voluntario(id)
+    FOREIGN KEY (idDonacion) REFERENCES Donacion(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (idVoluntario) REFERENCES Voluntarios(idUser) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+/* 
+ALTER TABLE voluntarios
+ADD CONSTRAINT voluntarios_unique_idUser UNIQUE (idUser);
+ALTER TABLE voluntariosdonacion
+ADD CONSTRAINT voluntariosdonacion_idvoluntario_fkey FOREIGN KEY (idVoluntario) REFERENCES Voluntarios(iduser) ON UPDATE CASCADE ON DELETE CASCADE;
+ */
+CREATE TABLE Inventario(
+    id BIGSERIAL PRIMARY KEY,
+    idDonacion integer not null,
+    estado varchar(10),
+    createdAt TIMESTAMP(0) NOT NULL,
+    FOREIGN KEY (idDonacion) REFERENCES Donacion(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE Producto(
+    id BIGSERIAL PRIMARY KEY,
+    idInventario integer not null,
+    nombre varchar(64),
+    descripcion varchar(255),
+    cantidad integer,
+    createdAt TIMESTAMP(0) NOT NULL,
+    FOREIGN KEY (idInventario) REFERENCES Inventario(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+/* -------------------------- */
 
 CREATE TABLE Solicitud(
     id integer primary key not null auto increment,
@@ -186,23 +240,7 @@ CREATE TABLE Organizacion(
                | disminuye(vuelve a su anterior estado) si esta en "desactivado"
 */
 
-CREATE TABLE Inventario(
-    id integer primary key not null auto increment,
-    idDonacion integer not null,
-    estado varchar(10),
-    createdAt datetime,
-    FOREIGN KEY (idDonacion) REFERENCES Donacion(id),
-);
 
-CREATE TABLE Producto(
-    id integer primary key not null auto increment,
-    idInventario integer not null,
-    nombre varchar(64),
-    descripcion varchar(255),
-    cantidad integer,
-    createdAt datetime
-    FOREIGN KEY (idInventario) REFERENCES Inventario(id),
-);
 
 CREATE TABLE Alimento(
     id integer primary key not null auto increment,
@@ -214,4 +252,48 @@ CREATE TABLE Alimento(
     createdAt datetime,
     FOREIGN KEY (idInventario) REFERENCES Inventario(id),
 );
+
+
+
+/* TRIGGERS */
+
+/*  */
+CREATE OR REPLACE FUNCTION after_donation_insert() RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO Inventario (idDonacion, estado, createdAt)
+    VALUES (NEW.id, 'activo', NOW());
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER after_donation_insert
+AFTER INSERT ON Donacion
+FOR EACH ROW
+EXECUTE PROCEDURE after_donation_insert();
+
+
+/* IF */
+CREATE OR REPLACE FUNCTION after_donation_update() RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.estado = 'inactivo' AND OLD.estado = 'activo' THEN
+        UPDATE Inventario
+        SET estado = 'inactivo'
+        WHERE idDonacion = NEW.id;
+
+        UPDATE Producto
+        SET cantidad = 0
+        WHERE idInventario IN (
+            SELECT id FROM Inventario WHERE idDonacion = NEW.id
+        );
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER after_donation_update
+AFTER UPDATE ON Donacion
+FOR EACH ROW
+EXECUTE PROCEDURE after_donation_update();
+
 

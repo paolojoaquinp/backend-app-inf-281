@@ -2,6 +2,34 @@ const db = require('../config/config');
 
 const Notificacion = {}
 
+Notificacion.read = (idNotification)  => {
+    const sql = `
+        UPDATE
+            notificaciones
+        SET
+            isread = $2
+        WHERE
+            id = $1
+    `;
+    return db.none(sql,[
+        idNotification,
+        true
+    ]);
+}
+
+Notificacion.getByType = (tipo) => {
+    const sql = `
+        SELECT 
+            *
+        FROM
+            notificaciones
+        WHERE
+            tipo = $1
+        ORDER BY
+            id
+    `;
+    return db.manyOrNone(sql, tipo);
+}
 
 Notificacion.getAll = () => {
     const sql = `
@@ -35,7 +63,7 @@ Notificacion.findByUserId = (id) => {
        receiver_id,
        message,
        createdat,
-       reatat
+       isread
     FROM 
         notificaciones 
     WHERE
@@ -51,16 +79,17 @@ Notificacion.create = (norma) => {
             sender_id,
             receiver_id,
             message,
-            createdAt,
-            read
+            createdat,
+            isread
         )
         VALUES($1, $2, $3, $4, $5) RETURNING id
     `;
     return db.oneOrNone(sql,[
-        norma.idAdministrador,
-        norma.titulo,
-        norma.descripcion,
-        new Date()
+        norma.sender_id,
+        norma.receiver_id ?? 4,
+        norma.message,
+        new Date(),
+        false
     ]);
 }
 

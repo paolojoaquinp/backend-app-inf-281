@@ -25,6 +25,10 @@ const voluntario = require('./routes/voluntariosRoutes');
 const donante = require('./routes/donantesRoutes');
 const beneficiario = require('./routes/beneficiariosRoutes');
 const notificacion = require('./routes/notificacionesRoutes');
+const donacion = require('./routes/donacionesRoutes');
+const inventario = require('./routes/inventarioRoutes');
+const producto = require('./routes/productoRoutes');
+const voluntarioDonacion = require('./routes/voluntarioDonacionRoutes');
 
 const port = process.env.PORT || 3001;
 
@@ -53,7 +57,10 @@ voluntario(app);
 donante(app);
 beneficiario(app);
 notificacion(app);
-
+donacion(app);
+inventario(app);
+producto(app);
+voluntarioDonacion(app);
 
 const io = new Server(server, {
     cors: {
