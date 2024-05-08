@@ -26,21 +26,48 @@ VoluntarioDonacion.getAll = () => {
     return db.manyOrNone(sql);
 }
 
-VoluntarioDonacion.getById = (idUser) => {
+VoluntarioDonacion.getById = (idVoluntario) => {
     const sql = `
     SELECT
-        id,
-        idUser,
-        ubicacion,
-        tipo,
-        createdAt
+        vd.id,
+        vd.idDonacion,
+        vd.idVoluntario,
+        vd.estado,
+        d.fechaentregar,
+        don.id as donante_id,
+        don.idUser as donante_user_id,
+        u.nombre as autor_name,
+        u.paterno as autor_paterno,
+        u.materno as autor_materno
     FROM 
-        voluntariodonacion 
+        voluntariosdonacion as vd
+    INNER JOIN donacion as d ON vd.idDonacion = d.id
+    INNER JOIN donantes as don ON d.idDonante = don.idUser
+    INNER JOIN usuarios as u ON don.idUser = u.id
     WHERE
-        idUser = $1
+        vd.idVoluntario = $1 or don.idUser = $1
     `;
 
-    return db.oneOrNone(sql, idUser)
+    return db.manyOrNone(sql, idVoluntario)
+        /* .then(result => {
+            if (result) {
+                return result.id;
+            } else {
+                return null;
+            }
+        }); */
+}
+
+VoluntarioDonacion.getOneById = (idVoluntario) => {
+    const sql = `
+    SELECT
+       *
+    FROM 
+        voluntariosdonacion
+    WHERE
+        idVoluntario = $1;
+    `;
+    return db.oneOrNone(sql, idVoluntario)
         .then(result => {
             if (result) {
                 return result.id;
@@ -77,30 +104,26 @@ VoluntarioDonacion.create = (voluntariodonacion) => {
     return db.oneOrNone(sql,[
         voluntariodonacion.idDonacion,
         voluntariodonacion.idVoluntario,
-        voluntariodonacion.estado,
+        voluntariodonacion.estado
     ]);
 }
 
 VoluntarioDonacion.update = (voluntariodonacion) => {
     const sql = `
         UPDATE
-            voluntariodonacion
+            voluntariosdonacion
         SET
-            idDonante = $2,
-            estado = $3,
-            lat = $4,
-            lng = $5,
-            fechaRecoger = $6
+            idDonacion = $2, 
+            idVoluntario = $3,
+            estado = $4
         WHERE
             id = $1
     `;
     return db.none(sql,[
         voluntariodonacion.id,
-        voluntariodonacion.idDonante,
-        voluntariodonacion.estado,
-        voluntariodonacion.lat,
-        voluntariodonacion.lng,
-        voluntariodonacion.fechaRecoger
+        voluntariodonacion.idDonacion,
+        voluntariodonacion.idVoluntario,
+        voluntariodonacion.estado
     ]);
 
 }

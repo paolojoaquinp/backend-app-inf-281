@@ -157,7 +157,7 @@ INSERT INTO NOTIFICACIONES (
 DROP TABLE IF EXISTS Donacion;
 CREATE TABLE Donacion(
     id BIGSERIAL PRIMARY KEY,
-    idDonante integer not null,
+    idDonante integer not null, /* idUser */
     estado varchar(10),
     lat integer,
     lng integer,
@@ -189,6 +189,19 @@ CREATE TABLE VoluntariosDonacion (
     FOREIGN KEY (idDonacion) REFERENCES Donacion(id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (idVoluntario) REFERENCES Voluntarios(idUser) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+INSERT INTO voluntariosdonacion(
+            idDonacion,
+            idVoluntario,
+            estado
+        ) VALUES (
+            1,
+            1,
+            'pendiente'
+        );
+
+ALTER TABLE Voluntarios
+ADD CONSTRAINT unique_idUser UNIQUE (idUser);
 
 /* 
 ALTER TABLE voluntarios

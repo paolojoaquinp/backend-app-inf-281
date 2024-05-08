@@ -47,11 +47,26 @@ module.exports = {
             });
         }
     },
+    async findOneById(req, res, next) {
+        try {
+            const id = req.params.id;
+            const data = await VoluntarioDonacion.getOneById(id);    
+            console.log(`VoluntarioDonacion: ${data}`);
+            return res.status(201).json(data);
+        } 
+        catch (error) {
+            console.log(`Error: ${error}`);
+            return res.status(501).json({
+                success: false,
+                message: 'Error al obtener el usuario por ID'
+            });
+        }
+    },
     async update(req, res, next) {
         try {
             
             const voluntariodonacion = req.body;
-            console.log(`Datos enviados del usuario: ${JSON.stringify(voluntariodonacion.idDonante)}`);
+            console.log(`Datos enviados del usuario: ${JSON.stringify(voluntariodonacion.idVoluntario)}`);
             await VoluntarioDonacion.update(voluntariodonacion);
             return res.status(201).json({
                 success: true,

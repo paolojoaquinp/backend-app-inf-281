@@ -25,46 +25,54 @@ Donacion.getAll = () => {
         donacion as d
     INNER JOIN donantes don ON d.iddonante = don.iduser
     INNER JOIN usuarios us ON don.iduser = us.id
-    ORDER BY d.id ASC
+    ORDER BY d.id DESC
     `;
 
     return db.manyOrNone(sql);
 }
 
-Donacion.getById = (idUser) => {
+Donacion.getById = (id) => {
     const sql = `
     SELECT
-        id,
-        idUser,
-        ubicacion,
-        tipo,
-        createdAt
-    FROM 
-        donacion 
+        d.*, 
+        don.iduser as idDonante,
+        us.nombre,
+        us.paterno,
+        us.materno,
+        us.email
+    FROM
+        donacion as d
+    INNER JOIN donantes don ON d.iddonante = don.iduser
+    INNER JOIN usuarios us ON don.iduser = us.id
     WHERE
-        idUser = $1
+        d.id = $1
     `;
 
-    return db.oneOrNone(sql, idUser)
-        .then(result => {
+    return db.oneOrNone(sql, id);
+        /* .then(result => {
             if (result) {
                 return result.id;
             } else {
                 return null;
             }
-        });
+        }); */
 }
 
 Donacion.getByUserId = (idDonante) => {
     const sql = `
     SELECT
-        *
-    FROM 
-        donacion 
+        d.*, 
+        don.iduser as idDonante,
+        us.nombre,
+        us.paterno,
+        us.materno,
+        us.email
+    FROM
+        donacion as d
+    INNER JOIN donantes don ON d.iddonante = don.iduser
+    INNER JOIN usuarios us ON don.iduser = us.id
     WHERE
-        idDonante = $1
-    GROUP BY
-        id
+        d.iddonante = $1
     `;
 
     return db.manyOrNone(sql, idDonante);

@@ -4,7 +4,10 @@ const VoluntarioDonacionesController = require('../controllers/voluntarioDonacio
 module.exports = (app) => {
     app.get('/api/voluntarioDonacion/getAll', VoluntarioDonacionesController.getAll);
     app.post('/api/voluntarioDonacion/create', VoluntarioDonacionesController.register);
+    
     app.get('/api/voluntarioDonacion/findById/:id', VoluntarioDonacionesController.findById);
+    app.get('/api/voluntarioDonacion/findOneById/:id', VoluntarioDonacionesController.findOneById);
+    
     app.put('/api/voluntarioDonacion/update', VoluntarioDonacionesController.update);
     app.delete('/api/voluntarioDonacion/remove/:id', VoluntarioDonacionesController.remove);
 

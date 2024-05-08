@@ -50,6 +50,7 @@ Notificacion.getAllById = (userId) => {
         notificaciones
     WHERE
         receiver_id = $1
+    ORDER BY id ASC
     `;
 
     return db.manyOrNone(sql,userId);
@@ -79,15 +80,17 @@ Notificacion.create = (norma) => {
             sender_id,
             receiver_id,
             message,
+            tipo,
             createdat,
             isread
         )
-        VALUES($1, $2, $3, $4, $5) RETURNING id
+        VALUES($1, $2, $3, $4, $5, $6) RETURNING id
     `;
     return db.oneOrNone(sql,[
         norma.sender_id,
         norma.receiver_id ?? 4,
         norma.message,
+        norma.tipo,
         new Date(),
         false
     ]);

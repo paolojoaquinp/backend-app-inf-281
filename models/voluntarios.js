@@ -6,10 +6,14 @@ const Voluntario = {}
 Voluntario.getAll = () => {
     const sql = `
     SELECT
-        *
+        v.*,
+        us.nombre,
+        us.paterno,
+        us.materno,
+        us.email
     FROM
         voluntarios as v
-    INNER JOIN usuarios ON v.idUser = usuarios.id
+    INNER JOIN usuarios us ON v.idUser = us.id
     ORDER BY v.id ASC
     `;
     return db.manyOrNone(sql);

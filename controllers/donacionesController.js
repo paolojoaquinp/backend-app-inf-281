@@ -47,6 +47,21 @@ module.exports = {
             });
         }
     },
+    async findByUserId(req, res, next) {
+        try {
+            const id = req.params.id;
+            const data = await Donacion.getByUserId(id);    
+            console.log(`Donacion: ${data}`);
+            return res.status(201).json(data);
+        } 
+        catch (error) {
+            console.log(`Error: ${error}`);
+            return res.status(501).json({
+                success: false,
+                message: 'Error al obtener el usuario por ID'
+            });
+        }
+    },
     async update(req, res, next) {
         try {
             
