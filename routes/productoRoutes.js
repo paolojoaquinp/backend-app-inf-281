@@ -3,6 +3,7 @@ const ProductoController = require('../controllers/productoController');
 
 module.exports = (app) => {
     app.get('/api/producto/getAll', ProductoController.getAll);
+    app.get('/api/producto/getAllByCategory', ProductoController.getAllByCategory);
     app.post('/api/producto/create', ProductoController.register);
     app.get('/api/producto/findById/:id', ProductoController.findById);
     app.put('/api/producto/update', ProductoController.update);

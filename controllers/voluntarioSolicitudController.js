@@ -1,9 +1,9 @@
-const Producto = require('../models/producto');
+const VoluntarioSolicitud = require('../models/voluntarioSolicitud');
 
 module.exports = {    
     async getAll(req, res, next) {
         try {
-            const data = await Producto.getAll();
+            const data = await VoluntarioSolicitud.getAll();
             return res.status(200).json(data);
         } catch (error) {
             console.log(`Error: ${error}`);
@@ -15,8 +15,8 @@ module.exports = {
     },
     async register(req, res ,next) {
         try {
-            const donacion = req.body;
-            const data = await Producto.create(donacion);
+            const voluntariodonacion = req.body;
+            const data = await VoluntarioSolicitud.create(voluntariodonacion);
 
             return res.status(201).json({
                 success:true,
@@ -35,8 +35,23 @@ module.exports = {
     async findById(req, res, next) {
         try {
             const id = req.params.id;
-            const data = await Producto.getById(id);    
-            console.log(`Producto: ${data}`);
+            const data = await VoluntarioSolicitud.getById(id);    
+            console.log(`VoluntarioSolicitud: ${data}`);
+            return res.status(201).json(data);
+        } 
+        catch (error) {
+            console.log(`Error: ${error}`);
+            return res.status(501).json({
+                success: false,
+                message: 'Error al obtener el usuario por ID'
+            });
+        }
+    },
+    async findOneById(req, res, next) {
+        try {
+            const id = req.params.id;
+            const data = await VoluntarioSolicitud.getOneById(id);    
+            console.log(`VoluntarioSolicitud: ${data}`);
             return res.status(201).json(data);
         } 
         catch (error) {
@@ -50,9 +65,9 @@ module.exports = {
     async update(req, res, next) {
         try {
             
-            const donacion = req.body;
-            console.log(`Datos enviados del usuario: ${JSON.stringify(donacion.idInventario)}`);
-            await Producto.update(donacion);
+            const voluntariodonacion = req.body;
+            console.log(`Datos enviados del usuario: ${JSON.stringify(voluntariodonacion.idVoluntario)}`);
+            await VoluntarioSolicitud.update(voluntariodonacion);
             return res.status(201).json({
                 success: true,
                 message: 'El registro se actualizo correctamente'
@@ -68,7 +83,7 @@ module.exports = {
     async remove(req, res, next) {
         try {
             const id = req.params.id;
-            await Producto.remove(id);
+            await VoluntarioSolicitud.remove(id);
             return res.status(201).json({
                 success: true,
                 message: 'El registro se elimino correctamente'
@@ -78,20 +93,6 @@ module.exports = {
             return res.status(501).json({
                 success: false,
                 message: 'Error al eliminar el registro'
-            });
-        }
-    },
-    async getAllByCategory(req, res, next) {
-        try {
-            const data = await Producto.getAllByCategory();    
-            console.log(`Producto: ${data}`);
-            return res.status(201).json(data);
-        } 
-        catch (error) {
-            console.log(`Error: ${error}`);
-            return res.status(501).json({
-                success: false,
-                message: 'Error al obtener el usuario por ID'
             });
         }
     }

@@ -20,9 +20,13 @@ Notificacion.read = (idNotification)  => {
 Notificacion.getByType = (tipo) => {
     const sql = `
         SELECT 
-            *
+            n.*,
+            u.nombre as author_name,
+            u.paterno as author_paterno,
+            u.materno as author_materno
         FROM
-            notificaciones
+            notificaciones n
+        INNER JOIN Usuarios u ON n.receiver_id = u.id
         WHERE
             tipo = $1
         ORDER BY

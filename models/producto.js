@@ -2,6 +2,19 @@ const db = require('../config/config');
 
 const Producto = {}
 
+Producto.getAllByCategory = () => {
+    const sql = `
+    SELECT 
+        p.nombre,
+        SUM(cantidad) as total
+    FROM producto as p
+        INNER JOIN inventario ON p.idinventario = inventario.id
+        WHERE inventario.estado = 'activo'
+        GROUP BY p.nombre;
+    `;
+    return db.manyOrNone(sql);
+}
+
 Producto.getAllById = (idInventario) => {
     const sql = `
     SELECT

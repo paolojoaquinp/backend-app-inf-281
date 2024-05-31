@@ -30,6 +30,10 @@ const inventario = require('./routes/inventarioRoutes');
 const producto = require('./routes/productoRoutes');
 const voluntarioDonacion = require('./routes/voluntarioDonacionRoutes');
 
+const solicitud = require('./routes/solicitudesRoutes');
+const solicitudProducto = require('./routes/solicitudProductoRoutes');
+
+const voluntarioSolicitud = require('./routes/voluntarioSolicitudRoutes');
 const port = process.env.PORT || 3001;
 
 app.use(logger('dev'));
@@ -61,6 +65,9 @@ donacion(app);
 inventario(app);
 producto(app);
 voluntarioDonacion(app);
+solicitud(app);
+solicitudProducto(app);
+voluntarioSolicitud(app);
 
 const io = new Server(server, {
     cors: {

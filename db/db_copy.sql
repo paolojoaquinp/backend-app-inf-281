@@ -173,13 +173,7 @@ ADD CONSTRAINT unique_idUser UNIQUE (idUser);
 
 ALTER TABLE Donacion
 ADD CONSTRAINT donacion_iddonante_fkey FOREIGN KEY (idDonante) REFERENCES Donantes(idUser);
-/* 
-ALTER TABLE Donacion
-DROP CONSTRAINT donacion_iddonante_fkey;
 
-ALTER TABLE Donacion
-ADD CONSTRAINT donacion_iddonante_fkey FOREIGN KEY (idDonante) REFERENCES Donantes(idUser) ON UPDATE CASCADE ON DELETE CASCADE;
- */
 
 CREATE TABLE VoluntariosDonacion (
     id BIGSERIAL PRIMARY KEY,
@@ -214,12 +208,7 @@ ADD CONSTRAINT unique_idUser UNIQUE (idUser);
 
 ALTER TABLE Beneficiarios
 ADD CONSTRAINT beneficiarios_unique_idUser UNIQUE (idUser);
-/* 
-ALTER TABLE voluntarios
-ADD CONSTRAINT voluntarios_unique_idUser UNIQUE (idUser);
-ALTER TABLE voluntariosdonacion
-ADD CONSTRAINT voluntariosdonacion_idvoluntario_fkey FOREIGN KEY (idVoluntario) REFERENCES Voluntarios(iduser) ON UPDATE CASCADE ON DELETE CASCADE;
- */
+
 CREATE TABLE Inventario(
     id BIGSERIAL PRIMARY KEY,
     idDonacion integer not null,
@@ -271,15 +260,6 @@ INSERT INTO Solicitud(
             '20240325 10:34:09 AM'
         );
 
-/* CREATE FUNCTION after_solicitud_insert() RETURNS TRIGGER AS $$
-BEGIN
-    INSERT INTO SolicitudProducto (idSolicitud, idProducto, cantidad)
-    VALUES (NEW.id, NEW.idProducto, NEW.cantidad);
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql; */
-
-
 CREATE TABLE Organizacion(
     id integer primary key not null auto increment,
     idBenefRepresentante integer not null,
@@ -287,14 +267,6 @@ CREATE TABLE Organizacion(
     tipo varchar(64),
     createdAt datetime
 );
-
-/* 
-
-    Inventario | puede incrementar si tiene el estado de "activado"
-               | disminuye(vuelve a su anterior estado) si esta en "desactivado"
-*/
-
-
 
 CREATE TABLE Alimento(
     id integer primary key not null auto increment,
